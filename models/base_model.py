@@ -7,7 +7,7 @@ The parent module
 from datetime import datetime
 
 
-class BaseModel():
+class BaseModel:
     """
     The parent class that all classes of AirBnB inherits\n
     It handles the initialization, serialization and
