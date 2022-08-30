@@ -57,5 +57,5 @@ class FileStorage:
         self.__objects['key'] = obj
 
     def save(self):
-        """Serializes objects in the class to the JSON file"""
+        """Serializes objects in to the JSON file"""
         pass
