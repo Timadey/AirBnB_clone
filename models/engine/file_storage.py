@@ -6,6 +6,8 @@ class FileStorage:
     file and deserializes JSON file to instances.
     It helps to store object in json formats in a file.
     """
+    __objects = {}
+    __file_path = ""
 
     @property
     def file_path(self):
@@ -50,11 +52,19 @@ class FileStorage:
     def new(self, obj):
         """Add the ``obj`` to the __object dictionary with key
         ``<obj class name>.id``
+
+        Args:
+            obj (dict): dictionary containing attributes of objects to create
+
+        Raises:
+            TypeError: if ``obj`` is not a dictionary
         """
-        class_name = obj['__class__']
-        id = obj['id']
+        if not type(obj) == dict:
+            raise TypeError("Arg obj can only be of type dict")
+        class_name = obj.get('__class__')
+        id = obj.get('id')
         key = class_name + '.' + id
-        self.__objects['key'] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """Serializes objects in to the JSON file"""
