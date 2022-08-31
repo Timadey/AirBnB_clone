@@ -1,18 +1,22 @@
 """This modeule defines that file storage class"""
 
 
+import json
+
+
 class FileStorage:
     """The ``FileStorage`` class serializes instances to a JSON
     file and deserializes JSON file to instances.
     It helps to store object in json formats in a file.
     """
     __objects = {}
-    __file_path = ""
+    __file_path = "objects.json"
 
     @property
     def file_path(self):
         """
-        file_path (string): path to the JSON file for example file.json
+        file_path (string): path to the JSON file. Default is ``objects.json``
+        at root directory
 
         Raises:
             TypeError: if the file_path is not of type string
@@ -28,7 +32,8 @@ class FileStorage:
     @property
     def objects(self):
         """
-        objects (dictionary): Stores all object by ``<class name>.id
+        objects (dictionary): Stores all object with ``<class name>.id``
+        as key
 
         Raises:
             TypeError: if the value to set is not a dictionary
@@ -67,5 +72,16 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Serializes objects in to the JSON file"""
-        pass
+        """Serializes objects in the filestorage to the JSON file"""
+        with open(self.__file_path, mode="w", encoding="utf-8") as file:
+            json.dump(self.__objects, file)
+
+    def reload(self):
+        """Deserializes the JSON file to filestorage if the file_path exists
+            The deserialized objects are stored in __objects of filestorage
+        """
+        try:
+            with open(self.__file_path, mode="r", encoding="utf-8") as json_file:
+                self.__objects = json.load(json_file)
+        except OSError:
+            pass
