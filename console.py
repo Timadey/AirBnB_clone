@@ -5,6 +5,7 @@ on AirBnb objects
 """
 import cmd
 import sys
+from types import new_class
 
 from models.base_model import BaseModel
 from models import storage
@@ -102,7 +103,19 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_all(self, line):
-        pass
+        line = self.parseline(line)
+        if line[0] is not None:
+            class_name = self.classes.get(line[0])
+            if class_name is None:
+                print("** class doesn't exist **")
+            else:
+                all_instances = storage.all()
+                instance_list = []
+                for instance in all_instances.keys():
+                    if line[0] in instance:
+                        instance_list.append(str(class_name(
+                            all_instances.get(instance))))
+                print(instance_list)
 
 
 if __name__ == '__main__':
