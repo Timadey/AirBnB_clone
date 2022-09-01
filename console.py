@@ -101,6 +101,9 @@ class HBNBCommand(cmd.Cmd):
             del storage.all()[class_instance[0]]
             storage.save()
 
+    def do_all(self, line):
+        pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
