@@ -5,6 +5,7 @@ on AirBnb objects
 """
 import cmd
 import sys
+from shlex import split
 
 from models.base_model import BaseModel
 from models import storage
@@ -16,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
     a framework for writing line-oriented command interpreters.
 
     """
-    classes = {
+    __classes = {
         "BaseModel": BaseModel,
     }
     prompt = "(hbnb) "
@@ -29,21 +30,21 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-    def get_instance(self, line) -> "(tuple[str, dict]) | None":
+    def get_instance(self, line) -> "(tuple[str, dict, list]) | None":
         """Get an instance attributes from storage using the class name and id
 
         Return a tuple containing the key and attributes of the instance
-        in the storage or None if not found
+        in the storage with a list of the parsed line or None if not found
         """
-        line = self.parseline(line)
-        if line[0] is None or line[0] == '':
+        line = split(line)
+        if line[0] == '':
             print("** class name missing **")
             return None
-        elif line[1] is None or line[1] == '':
+        elif len(line) < 2:
             print("** instance id missing **")
             return None
         else:
-            if not self.classes.get(line[0]):
+            if not self.__classes.get(line[0]):
                 print("** class doesn't exist **")
                 return None
             key = f"{line[0]}.{line[1]}"
@@ -51,7 +52,15 @@ class HBNBCommand(cmd.Cmd):
             if class_dict is None:
                 print("** no instance found **")
                 return None
-            return key, class_dict
+            return key, class_dict, line
+
+    @staticmethod
+    def cast_type(obj):
+        """Returns the real value of an object in a string"""
+        try:
+            return eval(obj)
+        except Exception:
+            return obj
 
     def do_quit(self, line):
         """Command to quit or exit the command line"""
@@ -72,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                instance = self.classes.get(line)()
+                instance = self.__classes.get(line)()
                 instance.save()
                 print(instance.id)
             except TypeError:
@@ -113,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         all_instances = storage.all()
         instance_list = []
         if line[0] is not None:
-            class_name = self.classes.get(line[0])
+            class_name = self.__classes.get(line[0])
             if class_name is None:
                 print("** class doesn't exist **")
                 return
@@ -124,10 +133,39 @@ class HBNBCommand(cmd.Cmd):
                         instance_list.append(str(instance))
         else:
             for key in list(all_instances.keys()):
-                class_name = self.classes.get(key.split(".")[0])
+                class_name = self.__classes.get(key.split(".")[0])
                 instance = class_name(**all_instances.get(key))
                 instance_list.append(str(instance))
         print(instance_list)
+
+    def do_update(self, line):
+        """Update an instance based on the class name and id
+        By adding or updating the attribute and saveing to storage
+
+        Usage: update [class name] [id] [attribute name] [attribute value]
+        Example: update BaseModel 1234-1234-1234 email "aibnb@mail.com"
+
+        Note: The following rules must be adhered to
+            * Arguments must be in the right order
+            * Each arguments are separated by a space
+            * A string argument with a space must be between double quote
+            * The error management starts from the first argument to the last one
+        """
+        class_instance = self.get_instance(line)
+        if class_instance is None:
+            return
+        line = class_instance[2][2:]
+        if len(line) < 1:
+            print("** attribute name missing **")
+            return
+        if len(line) < 2:
+            print("** value missing **")
+            return
+        attr_name, attr_value = line[0], line[1]
+        class_name = self.__classes.get(class_instance[2][0])
+        instance = class_name(**class_instance[1])
+        instance.__setattr__(attr_name, self.cast_type(attr_value))
+        instance.save()
 
 
 if __name__ == '__main__':
