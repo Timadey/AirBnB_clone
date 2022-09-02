@@ -26,7 +26,7 @@ class BaseModel():
         """
         Initializes the BaseModel
         """
-        if kwargs is not None:
+        if kwargs:
             for key in kwargs.keys():
                 if key != "__class__":
                     if key not in ["created_at", "updated_at"]:
@@ -41,7 +41,7 @@ class BaseModel():
             storage.new(self.to_dict())
 
     def __str__(self):
-        return f"[BaseModel] ({self.id}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
         """Updates the public instance attribute ``updated_at``
@@ -65,7 +65,7 @@ class BaseModel():
         """
 
         class_dict = self.__dict__.copy()
-        class_dict['__class__'] = __class__.__name__
+        class_dict['__class__'] = self.__class__.__name__
         class_dict['created_at'] = datetime.isoformat(
             class_dict['created_at'])
         class_dict['updated_at'] = datetime.isoformat(

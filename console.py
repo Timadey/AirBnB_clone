@@ -8,6 +8,13 @@ import sys
 from shlex import split
 
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models.state import State
+
 from models import storage
 
 
@@ -19,6 +26,12 @@ class HBNBCommand(cmd.Cmd):
     """
     __classes = {
         "BaseModel": BaseModel,
+        "User": User,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "Amenity": Amenity,
     }
     prompt = "(hbnb) "
 
@@ -37,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
         in the storage with a list of the parsed line or None if not found
         """
         line = split(line)
-        if line[0] == '':
+        if len(line) < 1:
             print("** class name missing **")
             return None
         elif len(line) < 2:

@@ -59,11 +59,9 @@ class FileStorage:
         """Add the ``obj`` to the __object dictionary with key
         ``<obj class name>.id``
 
-        Args:
-            obj (dict): dictionary containing attributes of objects to create
+        Args:obj (dict): dictionary containing attributes of objects to create
 
-        Raises:
-            TypeError: if ``obj`` is not a dictionary
+        Raises:TypeError: if ``obj`` is not a dictionary
         """
         if not type(obj) == dict:
             raise TypeError("Arg obj can only be of type dict")
@@ -75,7 +73,7 @@ class FileStorage:
     def save(self):
         """Serializes objects in the filestorage to the JSON file"""
         with open(self.__file_path, mode="w", encoding="utf-8") as file:
-            json.dump(self.__objects, file)
+            json.dump(self.__objects, file, indent="\t")
 
     def reload(self):
         """Deserializes the JSON file to filestorage if the file_path exists
