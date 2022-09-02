@@ -6,6 +6,7 @@ The parent module
 
 from datetime import datetime
 from models import storage
+import uuid
 
 
 class BaseModel():
@@ -21,15 +22,22 @@ class BaseModel():
         ``updated_at (datetime)``: current datetime when an instance is updated
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         """
         Initializes the BaseModel
         """
-        import uuid
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
-        if (kwargs is None):
+        if kwargs is not None:
+            for key in kwargs.keys():
+                if key != "__class__":
+                    if key not in ["created_at", "updated_at"]:
+                        self.__setattr__(key, kwargs[key])
+                    else:
+                        self.__setattr__(
+                            key, datetime.fromisoformat(kwargs[key]))
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
             storage.new(self.to_dict())
 
     def __str__(self):

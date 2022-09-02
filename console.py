@@ -5,7 +5,6 @@ on AirBnb objects
 """
 import cmd
 import sys
-from types import new_class
 
 from models.base_model import BaseModel
 from models import storage
@@ -73,9 +72,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                new_class = self.classes.get(line)()
-                new_class.save()
-                print(new_class.id)
+                instance = self.classes.get(line)()
+                instance.save()
+                print(instance.id)
             except TypeError:
                 print("** class doesn't exist **")
 
@@ -103,19 +102,32 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_all(self, line):
+        """Prints all string representation of all instances in the storage
+        Based or not on the class name
+        Usage: all [-class name] #: class name is optional
+        Example:
+            all #: print all instances
+            all BaseModel #:print all "BaseModel" instances
+        """
         line = self.parseline(line)
+        all_instances = storage.all()
+        instance_list = []
         if line[0] is not None:
             class_name = self.classes.get(line[0])
             if class_name is None:
                 print("** class doesn't exist **")
+                return
             else:
-                all_instances = storage.all()
-                instance_list = []
-                for instance in all_instances.keys():
-                    if line[0] in instance:
-                        instance_list.append(str(class_name(
-                            all_instances.get(instance))))
-                print(instance_list)
+                for key in list(all_instances.keys()):
+                    if line[0] in key:
+                        instance = class_name(**all_instances.get(key))
+                        instance_list.append(str(instance))
+        else:
+            for key in list(all_instances.keys()):
+                class_name = self.classes.get(key.split(".")[0])
+                instance = class_name(**all_instances.get(key))
+                instance_list.append(str(instance))
+        print(instance_list)
 
 
 if __name__ == '__main__':
