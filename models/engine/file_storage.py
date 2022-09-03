@@ -80,7 +80,8 @@ class FileStorage:
             The deserialized objects are stored in __objects of filestorage
         """
         try:
-            with open(self.__file_path, mode="r", encoding="utf-8") as json_file:
+            with open(self.__file_path, mode='r',
+                      encoding="utf-8") as json_file:
                 self.__objects = json.load(json_file)
         except OSError:
             pass

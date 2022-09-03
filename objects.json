@@ -90,5 +90,170 @@
 		"created_at": "2022-09-03T05:40:32.129730",
 		"updated_at": "2022-09-03T05:40:32.129730",
 		"__class__": "Amenity"
+	},
+	"BaseModel.4d9883eb-6d3c-452b-a8da-95ec8d82a3a5": {
+		"id": "4d9883eb-6d3c-452b-a8da-95ec8d82a3a5",
+		"created_at": "2022-09-03T06:51:41.389204",
+		"updated_at": "2022-09-03T06:51:41.389204",
+		"__class__": "BaseModel"
+	},
+	"Amenity.8dc9f441-2446-4add-af3c-326123d8b2f9": {
+		"id": "8dc9f441-2446-4add-af3c-326123d8b2f9",
+		"created_at": "2022-09-03T20:13:17.182853",
+		"updated_at": "2022-09-03T20:13:17.182853",
+		"__class__": "Amenity"
+	},
+	"BaseModel.8646757d-866d-49a5-821b-572690d5bcaa": {
+		"id": "8646757d-866d-49a5-821b-572690d5bcaa",
+		"created_at": "2022-09-03T20:13:17.185277",
+		"updated_at": "2022-09-03T20:13:17.203753",
+		"name": "Holberton",
+		"my_number": 89,
+		"first_name": "Second",
+		"__class__": "BaseModel"
+	},
+	"City.cea8ef0c-5d5f-4fcc-9db6-c9e0d0d00fcf": {
+		"id": "cea8ef0c-5d5f-4fcc-9db6-c9e0d0d00fcf",
+		"created_at": "2022-09-03T20:13:17.187652",
+		"updated_at": "2022-09-03T20:13:17.187652",
+		"__class__": "City"
+	},
+	"BaseModel.c777ac35-835a-4512-88ec-0613238a68fc": {
+		"id": "c777ac35-835a-4512-88ec-0613238a68fc",
+		"created_at": "2022-09-03T20:13:17.191737",
+		"updated_at": "2022-09-03T20:13:17.220433",
+		"full_name": "BaseModel Instance",
+		"my_name": "Second name",
+		"__class__": "BaseModel"
+	},
+	"Place.ae0c77dc-a654-4f3e-8ee0-4954959e3339": {
+		"id": "ae0c77dc-a654-4f3e-8ee0-4954959e3339",
+		"created_at": "2022-09-03T20:13:17.194569",
+		"updated_at": "2022-09-03T20:13:17.194569",
+		"__class__": "Place"
+	},
+	"Review.41c19e99-eb37-4423-b8c8-1764680180e1": {
+		"id": "41c19e99-eb37-4423-b8c8-1764680180e1",
+		"created_at": "2022-09-03T20:13:17.196315",
+		"updated_at": "2022-09-03T20:13:17.196315",
+		"__class__": "Review"
+	},
+	"State.5a752aa2-1fd8-4172-bc77-9fe6669f53d8": {
+		"id": "5a752aa2-1fd8-4172-bc77-9fe6669f53d8",
+		"created_at": "2022-09-03T20:13:17.197903",
+		"updated_at": "2022-09-03T20:13:17.197903",
+		"__class__": "State"
+	},
+	"User.08c8dfb2-12fc-4ef1-9f63-89422acf57b5": {
+		"id": "08c8dfb2-12fc-4ef1-9f63-89422acf57b5",
+		"created_at": "2022-09-03T20:13:17.199566",
+		"updated_at": "2022-09-03T20:13:17.199566",
+		"__class__": "User"
+	},
+	"Amenity.df21e033-f9fd-45dd-8409-d86bbedaaa89": {
+		"id": "df21e033-f9fd-45dd-8409-d86bbedaaa89",
+		"created_at": "2022-09-03T20:15:32.098632",
+		"updated_at": "2022-09-03T20:15:32.098632",
+		"__class__": "Amenity"
+	},
+	"BaseModel.16aba40c-21a8-4147-939d-ac692a40c996": {
+		"id": "16aba40c-21a8-4147-939d-ac692a40c996",
+		"created_at": "2022-09-03T20:15:32.099490",
+		"updated_at": "2022-09-03T20:15:32.110199",
+		"name": "Holberton",
+		"my_number": 89,
+		"first_name": "Second",
+		"__class__": "BaseModel"
+	},
+	"City.2fc882dd-fdf5-4bf5-8109-ac2d255b51a4": {
+		"id": "2fc882dd-fdf5-4bf5-8109-ac2d255b51a4",
+		"created_at": "2022-09-03T20:15:32.100339",
+		"updated_at": "2022-09-03T20:15:32.100339",
+		"__class__": "City"
+	},
+	"BaseModel.42af4bc4-d5c4-494d-b770-a1b92c61d84e": {
+		"id": "42af4bc4-d5c4-494d-b770-a1b92c61d84e",
+		"created_at": "2022-09-03T20:15:32.103817",
+		"updated_at": "2022-09-03T20:15:32.120655",
+		"full_name": "BaseModel Instance",
+		"my_name": "Second name",
+		"__class__": "BaseModel"
+	},
+	"Place.55c75bb0-e4ad-4d9a-ab8d-8202a216d6c6": {
+		"id": "55c75bb0-e4ad-4d9a-ab8d-8202a216d6c6",
+		"created_at": "2022-09-03T20:15:32.104671",
+		"updated_at": "2022-09-03T20:15:32.104671",
+		"__class__": "Place"
+	},
+	"Review.a4596436-7882-449b-9dda-ec9e9c5663e7": {
+		"id": "a4596436-7882-449b-9dda-ec9e9c5663e7",
+		"created_at": "2022-09-03T20:15:32.105351",
+		"updated_at": "2022-09-03T20:15:32.105351",
+		"__class__": "Review"
+	},
+	"State.a79af2e2-6956-4a36-b7e9-32574532253f": {
+		"id": "a79af2e2-6956-4a36-b7e9-32574532253f",
+		"created_at": "2022-09-03T20:15:32.106062",
+		"updated_at": "2022-09-03T20:15:32.106062",
+		"__class__": "State"
+	},
+	"User.e17ed40f-3103-4e11-9e32-5e75447fc3f9": {
+		"id": "e17ed40f-3103-4e11-9e32-5e75447fc3f9",
+		"created_at": "2022-09-03T20:15:32.106741",
+		"updated_at": "2022-09-03T20:15:32.106741",
+		"__class__": "User"
+	},
+	"Amenity.58d4c98f-2530-44b2-9d0b-f5bf39e6c93d": {
+		"id": "58d4c98f-2530-44b2-9d0b-f5bf39e6c93d",
+		"created_at": "2022-09-03T20:18:04.538272",
+		"updated_at": "2022-09-03T20:18:04.538272",
+		"__class__": "Amenity"
+	},
+	"BaseModel.8d5cc3ae-f028-4021-ac87-3258fc8ea607": {
+		"id": "8d5cc3ae-f028-4021-ac87-3258fc8ea607",
+		"created_at": "2022-09-03T20:18:04.539200",
+		"updated_at": "2022-09-03T20:18:04.568498",
+		"name": "Holberton",
+		"my_number": 89,
+		"first_name": "Second",
+		"__class__": "BaseModel"
+	},
+	"City.27f322e1-3dc0-4453-9aac-2c01c40743c6": {
+		"id": "27f322e1-3dc0-4453-9aac-2c01c40743c6",
+		"created_at": "2022-09-03T20:18:04.540920",
+		"updated_at": "2022-09-03T20:18:04.540920",
+		"__class__": "City"
+	},
+	"BaseModel.246880b6-1299-4d14-9f45-d40abe0281e2": {
+		"id": "246880b6-1299-4d14-9f45-d40abe0281e2",
+		"created_at": "2022-09-03T20:18:04.547500",
+		"updated_at": "2022-09-03T20:18:04.578220",
+		"full_name": "BaseModel Instance",
+		"my_name": "Second name",
+		"__class__": "BaseModel"
+	},
+	"Place.db2847bd-881f-471b-bcf1-b71328479e88": {
+		"id": "db2847bd-881f-471b-bcf1-b71328479e88",
+		"created_at": "2022-09-03T20:18:04.549305",
+		"updated_at": "2022-09-03T20:18:04.549305",
+		"__class__": "Place"
+	},
+	"Review.987c9266-d9a9-484c-9730-3ae9a376b4ab": {
+		"id": "987c9266-d9a9-484c-9730-3ae9a376b4ab",
+		"created_at": "2022-09-03T20:18:04.550624",
+		"updated_at": "2022-09-03T20:18:04.550624",
+		"__class__": "Review"
+	},
+	"State.b08a4863-c963-4dad-93e5-c5dd296ce345": {
+		"id": "b08a4863-c963-4dad-93e5-c5dd296ce345",
+		"created_at": "2022-09-03T20:18:04.551868",
+		"updated_at": "2022-09-03T20:18:04.551868",
+		"__class__": "State"
+	},
+	"User.6932c087-6d06-4821-9189-7ea19319163e": {
+		"id": "6932c087-6d06-4821-9189-7ea19319163e",
+		"created_at": "2022-09-03T20:18:04.553033",
+		"updated_at": "2022-09-03T20:18:04.553033",
+		"__class__": "User"
 	}
 }

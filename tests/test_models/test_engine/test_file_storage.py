@@ -1,110 +1,117 @@
 #!/usr/bin/python3
-''' module for file_storage tests '''
-from unittest import TestCase
-import json
-import re
-from uuid import UUID, uuid4
-from datetime import datetime
+""" Module of Unittests """
+import unittest
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+from models import storage
 import os
-from test_models import TestFileStorage, test_base_model
+import json
+
+storage.file_path = "testobject.json"
 
 
-class TestFileStorage(TestCase):
-    ''' tests FileStorage class '''
-    def test_5(self):
-        ''' tests task 4 '''
-        FS_dict = FileStorage.__dict__
-        FS__path = '_FileStorage__file_path'
-        FS__objs = '_FileStorage__objects'
-        FS_path = FS_dict[FS__path]
-        FS_objs = FS_dict[FS__objs]
+class FileStorageTests(unittest.TestCase):
+    """ Suite of File Storage Tests """
 
-        # valid types
-        self.assertTrue(type(FS_path) is str and FS_path)
-        self.assertTrue(type(FS_objs) is dict)
+    my_model = BaseModel()
 
-        # same object returned
-        self.assertTrue(getattr(storage, FS__path))
-        self.assertTrue(getattr(storage, FS__objs) is storage.all())
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            fd = open(storage.file_path, mode='x')
+        except FileExistsError:
+            fd = open(storage.file_path, mode='w')
+        finally:
+            fd.close()
 
-        FS_objs.clear()
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove(storage.file_path)
 
-        # object registration and persistent __objects dict
-        oobjs = storage.all()
-        oobjs_cp = oobjs.copy()
-        obj = BaseModel()
-        storage.new(obj)
-        self.assertTrue(oobjs is storage.all())
-        self.assertEqual(len(oobjs.keys()), 1)
-        self.assertTrue(set(storage.all().keys())
-                        .difference(set(oobjs_cp.keys())) ==
-                        {'BaseModel.{}'.format(obj.id)})
+    def testClassInstance(self):
+        """ Check instance """
+        self.assertIsInstance(storage, FileStorage)
 
-        oobjs_cp = oobjs.copy()
-        # storage.new(obj)
-        self.assertTrue(oobjs is storage.all())
-        self.assertEqual(oobjs, oobjs_cp)
+    def testStoreBaseModel(self):
+        """ Test save and reload functions """
+        self.my_model.full_name = "BaseModel Instance"
+        self.my_model.save()
+        bm_dict = self.my_model.to_dict()
+        all_objs = storage.all()
 
-        obj = BaseModel()
-        storage.new(obj)
-        self.assertEqual(len(oobjs.keys()), 2)
+        key = bm_dict['__class__'] + "." + bm_dict['id']
+        self.assertEqual(key in all_objs, True)
 
-        # check serialization
-        oobjs_cp = oobjs.copy()
+    def testStoreBaseModel2(self):
+        """ Test save, reload and update functions """
+        self.my_model.my_name = "First name"
+        self.my_model.save()
+        bm_dict = self.my_model.to_dict()
+        all_objs = storage.all()
+
+        key = bm_dict['__class__'] + "." + bm_dict['id']
+
+        self.assertEqual(key in all_objs, True)
+        self.assertEqual(bm_dict['my_name'], "First name")
+
+        create1 = bm_dict['created_at']
+        update1 = bm_dict['updated_at']
+
+        self.my_model.my_name = "Second name"
+        self.my_model.save()
+        bm_dict = self.my_model.to_dict()
+        all_objs = storage.all()
+
+        self.assertEqual(key in all_objs, True)
+
+        create2 = bm_dict['created_at']
+        update2 = bm_dict['updated_at']
+
+        self.assertEqual(create1, create2)
+        self.assertNotEqual(update1, update2)
+        self.assertEqual(bm_dict['my_name'], "Second name")
+
+    def testHasAttributes(self):
+        """verify if attributes exist"""
+        self.assertEqual(hasattr(FileStorage, '_FileStorage__file_path'), True)
+        self.assertEqual(hasattr(FileStorage, '_FileStorage__objects'), True)
+
+    def testsave(self):
+        """verify if JSON exists"""
+        self.my_model.save()
+        self.assertEqual(os.path.exists(storage._FileStorage__file_path), True)
+        self.assertEqual(storage.all(), storage._FileStorage__objects)
+
+    def testreload(self):
+        """test if reload """
+        self.my_model.save()
+        self.assertEqual(os.path.exists(storage._FileStorage__file_path), True)
+        dobj = storage.all()
+        FileStorage._FileStorage__objects = {}
+        self.assertNotEqual(dobj, FileStorage._FileStorage__objects)
+        storage.reload()
+        for key, value in storage.all().items():
+            self.assertEqual(dobj[key], value)
+
+    def testSaveSelf(self):
+        """ Check save self """
+        msg = "save() takes 1 positional argument but 2 were given"
+        with self.assertRaises(TypeError) as e:
+            FileStorage.save(self, 100)
+
+        self.assertEqual(str(e.exception), msg)
+
+    def test_save_FileStorage(self):
+        """ Test if 'new' method is working good """
+        var1 = self.my_model.to_dict()
+        new_key = var1['__class__'] + "." + var1['id']
         storage.save()
-        self.assertTrue(os.path.isfile(FS_path))
-        with open(FS_path, 'r') as file:
-            js_objs = json.load(file)
-            self.assertTrue(type(js_objs) is dict)
-            self.assertEqual(len(js_objs.keys()), 2)
-            self.assertTrue(all(v in oobjs.keys() for v in js_objs.keys()))
-        storage.all().clear()
-        storage.reload()
+        with open(storage.file_path, 'r') as fd:
+            var2 = json.load(fd)
+        new = var2[new_key]
+        for key in new:
+            self.assertEqual(var1[key], new[key])
 
-        # check deserialization
-        for k, v in oobjs_cp.items():
-            oobjs_cp[k] = v.to_dict()
-        oobjs_cp2 = storage.all().copy()
-        for k, v in oobjs_cp2.items():
-            oobjs_cp2[k] = v.to_dict()
-        self.assertEqual(oobjs_cp, oobjs_cp2)
 
-        # ### check no deserialization for absent file
-        oobjs_cp = storage.all().copy()
-        os.remove(FS_path)
-        storage.reload()
-        self.assertEqual(oobjs_cp, storage.all())
-
-        # automatic registration for instances created with no args
-        obj = BaseModel()
-        kid = 'BaseModel.{}'.format(obj.id)
-        self.assertTrue(kid in storage.all() and storage.all()[kid] is obj)
-        sleep(.01)
-        now = datetime.utcnow()
-        obj.updated_at = now
-        obj.save()
-        storage.all().clear()
-        storage.reload()
-        oobjs = storage.all()
-        storage.reload()  # insignificant reload
-        oobjs2 = storage.all()
-
-        # same deserialization
-        self.assertEqual(obj.to_dict(), storage.all()[kid].to_dict())
-        self.assertFalse(obj is storage.all()[kid].to_dict())
-
-        # args should not be counted towards manual instantiation
-        obj = BaseModel(1, 2, 3)
-        kid = 'BaseModel.{}'.format(obj.id)
-        self.assertTrue(kid in storage.all() and storage.all()[kid] is obj)
-
-        # instances constructed with kwargs are not registered
-        obj = BaseModel(id=str(uuid4()), created_at=now.isoformat(),
-                        updated_at=now.isoformat())
-        kid = 'BaseModel.{}'.format(obj.id)
-        self.assertFalse(kid in storage.all())
-        self.assertFalse(obj in storage.all().values())
-<<<<<<< HEAD
-=======
-        
->>>>>>> 3bfd6872242ceade76d13dcaea96e1bc03b825cf
+if __name__ == '__main__':
+    unittest.main()

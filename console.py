@@ -38,8 +38,8 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """What the command line should when an empty line is inputted
-        and ENTER key pressed. In other word, this method runs when the user doesn't give
-        any input
+        and ENTER key pressed. In other word, this method runs when
+        the user doesn't give any input
 
         """
         pass
@@ -114,7 +114,8 @@ class HBNBCommand(cmd.Cmd):
             print(class_instance[1])
 
     def do_destroy(self, line):
-        """Deletes an instance from storage given the class name and instance id
+        """Deletes an instance from storage
+        given the class name and instance id
 
         Usage: ``destroy [class name] [insatnce id]``
         Example: ``destroy BaseModel 3b846d84-b15b-4eb2-928f-939621b5fbb1``
@@ -163,7 +164,8 @@ class HBNBCommand(cmd.Cmd):
             * Arguments must be in the right order
             * Each arguments are separated by a space
             * A string argument with a space must be between double quote
-            * The error management starts from the first argument to the last one
+            * The error management starts from the first argument to
+            the last one
         """
         class_instance = self.get_instance(line)
         if class_instance is None:
