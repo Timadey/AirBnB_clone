@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Command interpreter for performing administrative operations
+Command Line Interpreter for performing administrative operations
 on AirBnb objects
 """
 import cmd
@@ -19,9 +19,10 @@ from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
-    """The command interpreter for performing administrative
+    """The command line interpreter (CLI) for performing administrative
     operations on AirBnB objects. It imports the cmd.Cmd class which is
     a framework for writing line-oriented command interpreters.
+    It supports the following, operations; create, read, update, delete
 
     """
     __classes = {
