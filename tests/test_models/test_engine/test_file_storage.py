@@ -104,7 +104,3 @@ class TestFileStorage(TestCase):
         kid = 'BaseModel.{}'.format(obj.id)
         self.assertFalse(kid in storage.all())
         self.assertFalse(obj in storage.all().values())
-<<<<<<< HEAD
-=======
-        
->>>>>>> 3bfd6872242ceade76d13dcaea96e1bc03b825cf
