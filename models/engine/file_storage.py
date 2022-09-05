@@ -29,7 +29,6 @@ class FileStorage:
         if not type(value) == str:
             raise TypeError("File path can only be a string")
         self.__file_path = value
-        return "OK"
 
     @property
     def objects(self):
@@ -85,6 +84,5 @@ class FileStorage:
             with open(self.__file_path, mode='r',
                       encoding="utf-8") as json_file:
                 self.__objects = json.load(json_file)
-            return "OK"
         except OSError:
             pass
