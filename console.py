@@ -4,7 +4,6 @@ Command Line Interpreter for performing administrative operations
 on AirBnb objects
 """
 import cmd
-import sys
 from shlex import split
 
 from models.base_model import BaseModel
@@ -25,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
     It supports the following, operations; create, read, update, delete
 
     """
-    __classes = {
+    _classes = {
         "BaseModel": BaseModel,
         "User": User,
         "City": City,
@@ -34,6 +33,7 @@ class HBNBCommand(cmd.Cmd):
         "State": State,
         "Amenity": Amenity,
     }
+    _commands = ["create", "update", "show", 'all', 'destroy', 'count']
     prompt = "(hbnb) "
     intro = """Welcome to AirBnb clone console(CLI)
     This console helps to manipulate objects used in this project
@@ -41,6 +41,29 @@ class HBNBCommand(cmd.Cmd):
     Run `help` to show available command
     `help command` to show detailed usage of command
     """
+
+    def precmd(self, line: str) -> str:
+        """Parse command input before execution"""
+        if '.' in line and '(' in line and ')' in line:
+            cls = line.split('.')
+            cmd = cls[1].split('(')
+            args = cmd[1].split(')')
+            if cls[0] in self._classes.keys() and cmd[0] in self._commands:
+                line = cmd[0] + ' ' + cls[0] + ' ' + args[0]
+        return line
+
+    def do_count(self, cls_name):
+        """Prints the number of instances a class has in storage
+        Usage: [class name].count()
+        Example: User.count()
+        """
+        count = 0
+        objects = storage.all()
+        for key in objects.keys():
+            class_name = key.split('.')
+            if class_name[0] == cls_name:
+                count = count + 1
+        print(count)
 
     def emptyline(self):
         """What the command line should when an empty line is inputted
@@ -64,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return None
         else:
-            if not self.__classes.get(line[0]):
+            if not self._classes.get(line[0]):
                 print("** class doesn't exist **")
                 return None
             key = f"{line[0]}.{line[1]}"
@@ -85,11 +108,12 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """Command to quit or exit the command line"""
         print("Bye")
-        sys.exit(0)
+        return True
 
     def do_EOF(self, line):
         """Exit the interpreter when an EOF is entered"""
-        self.do_quit(line)
+        print("Bye")
+        return True
 
     def do_create(self, line):
         """Create a new instance of a class and save the instance in storage
@@ -101,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                instance = self.__classes.get(line)()
+                instance = self._classes.get(line)()
                 storage.save()
                 print(instance.id)
             except TypeError:
@@ -143,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         all_instances = storage.all()
         instance_list = []
         if line[0] is not None:
-            class_name = self.__classes.get(line[0])
+            class_name = self._classes.get(line[0])
             if class_name is None:
                 print("** class doesn't exist **")
                 return
@@ -154,7 +178,7 @@ class HBNBCommand(cmd.Cmd):
                         instance_list.append(str(instance))
         else:
             for key in list(all_instances.keys()):
-                class_name = self.__classes.get(key.split(".")[0])
+                class_name = self._classes.get(key.split(".")[0])
                 instance = class_name(**all_instances.get(key))
                 instance_list.append(str(instance))
         print(instance_list)
@@ -184,7 +208,7 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
         attr_name, attr_value = line[0], line[1]
-        class_name = self.__classes.get(class_instance[2][0])
+        class_name = self._classes.get(class_instance[2][0])
         instance = class_name(**class_instance[1])
         instance.__setattr__(attr_name, self.cast_type(attr_value))
         instance.save()
