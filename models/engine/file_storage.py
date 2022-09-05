@@ -29,6 +29,7 @@ class FileStorage:
         if not type(value) == str:
             raise TypeError("File path can only be a string")
         self.__file_path = value
+        return "OK"
 
     @property
     def objects(self):
@@ -63,8 +64,8 @@ class FileStorage:
 
         Raises:TypeError: if ``obj`` is not a dictionary
         """
-        if not type(obj) == dict:
-            raise TypeError("Arg obj can only be of type dict")
+        # if not type(obj) == dict:
+        #     raise TypeError("Arg obj can only be of type dict")
         class_name = obj.get('__class__')
         id = obj.get('id')
         key = class_name + '.' + id
@@ -74,6 +75,7 @@ class FileStorage:
         """Serializes objects in the filestorage to the JSON file"""
         with open(self.__file_path, mode="w", encoding="utf-8") as file:
             json.dump(self.__objects, file, indent="\t")
+        return "OK"
 
     def reload(self):
         """Deserializes the JSON file to filestorage if the file_path exists
@@ -83,5 +85,6 @@ class FileStorage:
             with open(self.__file_path, mode='r',
                       encoding="utf-8") as json_file:
                 self.__objects = json.load(json_file)
+            return "OK"
         except OSError:
             pass
