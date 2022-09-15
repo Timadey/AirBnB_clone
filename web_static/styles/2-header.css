@@ -1,0 +1,11 @@
+header {
+    background-color: #FF0000;
+    color: white;
+    border-bottom: #CCCCCC 1px;
+    height: 70px;
+    width: 100%;
+}
+
+img .logo {
+    margin-left: 20px;
+}
